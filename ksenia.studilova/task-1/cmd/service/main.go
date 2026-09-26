@@ -4,25 +4,25 @@ import "fmt"
 
 func main() {
 	var firstOperand int
-	_, err1 := fmt.Scan(&firstOperand)
+	_, err := fmt.Scan(&firstOperand)
 
-	if err1 != nil {
+	if err != nil {
 		fmt.Println("Invalid first operand")
 		return
 	}
 
 	var secondOperand int
-	_, err2 := fmt.Scan(&secondOperand)
+	_, err = fmt.Scan(&secondOperand)
 
-	if err2 != nil {
+	if err != nil {
 		fmt.Println("Invalid second operand")
 		return
 	}
 
 	var operation string
-	_, err3 := fmt.Scan(&operation)
+	_, err = fmt.Scan(&operation)
 
-	if err3 != nil {
+	if err != nil {
 		fmt.Println("Invalid operation")
 		return
 	}
