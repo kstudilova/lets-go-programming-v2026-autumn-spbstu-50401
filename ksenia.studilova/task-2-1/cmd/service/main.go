@@ -18,14 +18,18 @@ func main() {
 			var temp int
 			fmt.Scan(&operation, &temp)
 
-			if operation == ">=" {
+			switch operation {
+			case ">=":
 				if temp > minTemp {
 					minTemp = temp
 				}
-			} else if operation == "<=" {
+			case "<=":
 				if temp < maxTemp {
 					maxTemp = temp
 				}
+			default:
+				fmt.Println("Unknown operation:", operation)
+				return
 			}
 
 			if minTemp > maxTemp {
