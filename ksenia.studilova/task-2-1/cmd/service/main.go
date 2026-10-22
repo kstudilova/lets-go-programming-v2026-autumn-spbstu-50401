@@ -4,19 +4,34 @@ import "fmt"
 
 func main() {
 	var departmentCount int
-	fmt.Scan(&departmentCount)
+
+	_, err := fmt.Scan(&departmentCount)
+	if err != nil {
+		fmt.Println("Input reading error:", err)
+		return
+	}
 
 	for i := 0; i < departmentCount; i++ {
 		minTemp := 15
 		maxTemp := 30
 
 		var employeeCount int
-		fmt.Scan(&employeeCount)
+
+		_, err := fmt.Scan(&employeeCount)
+		if err != nil {
+			fmt.Println("Input reading error:", err)
+			return
+		}
 
 		for j := 0; j < employeeCount; j++ {
 			var operation string
 			var temp int
-			fmt.Scan(&operation, &temp)
+
+			_, err := fmt.Scan(&operation, &temp)
+			if err != nil {
+				fmt.Println("Input reading error:", err)
+				return
+			}
 
 			switch operation {
 			case ">=":
