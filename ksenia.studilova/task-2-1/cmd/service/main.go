@@ -8,10 +8,11 @@ func main() {
 	_, err := fmt.Scan(&departmentCount)
 	if err != nil {
 		fmt.Println("Input reading error:", err)
+
 		return
 	}
 
-	for i := 0; i < departmentCount; i++ {
+	for range departmentCount {
 		minTemp := 15
 		maxTemp := 30
 
@@ -20,16 +21,20 @@ func main() {
 		_, err := fmt.Scan(&employeeCount)
 		if err != nil {
 			fmt.Println("Input reading error:", err)
+
 			return
 		}
 
-		for j := 0; j < employeeCount; j++ {
-			var operation string
-			var temp int
+		for range employeeCount {
+			var (
+				operation string
+				temp      int
+			)
 
 			_, err := fmt.Scan(&operation, &temp)
 			if err != nil {
 				fmt.Println("Input reading error:", err)
+
 				return
 			}
 
@@ -44,6 +49,7 @@ func main() {
 				}
 			default:
 				fmt.Println("Unknown operation:", operation)
+
 				return
 			}
 
