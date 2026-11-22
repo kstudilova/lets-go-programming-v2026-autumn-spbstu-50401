@@ -35,6 +35,34 @@ type Currency struct {
 	Value    float64 `json:"value"`
 }
 
+func convertCurrencies(valutes []Valute) []Currency {
+	var currencies []Currency
+
+	for _, valute := range valutes {
+		numCode, err := strconv.Atoi(valute.NumCode)
+		if err != nil {
+			panic(err)
+		}
+
+		valueStr := strings.ReplaceAll(valute.Value, ",", ".")
+
+		value, err := strconv.ParseFloat(valueStr, 64)
+		if err != nil {
+			panic(err)
+		}
+
+		currency := Currency{
+			NumCode:  numCode,
+			CharCode: valute.CharCode,
+			Value:    value,
+		}
+
+		currencies = append(currencies, currency)
+	}
+
+	return currencies
+}
+
 func higherValue(a, b Currency) bool {
 	return a.Value > b.Value
 }
@@ -76,29 +104,7 @@ func main() {
 		panic(err)
 	}
 
-	var currencies []Currency
-
-	for _, valute := range valCurs.Valutes {
-		numCode, err := strconv.Atoi(valute.NumCode)
-		if err != nil {
-			panic(err)
-		}
-
-		valueStr := strings.ReplaceAll(valute.Value, ",", ".")
-
-		value, err := strconv.ParseFloat(valueStr, 64)
-		if err != nil {
-			panic(err)
-		}
-
-		currency := Currency{
-			NumCode:  numCode,
-			CharCode: valute.CharCode,
-			Value:    value,
-		}
-
-		currencies = append(currencies, currency)
-	}
+	currencies := convertCurrencies(valCurs.Valutes)
 
 	sort.Slice(currencies, func(i, j int) bool {
 		return higherValue(currencies[i], currencies[j])
