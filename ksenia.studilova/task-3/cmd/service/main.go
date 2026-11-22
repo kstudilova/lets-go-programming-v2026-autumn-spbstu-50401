@@ -27,7 +27,7 @@ type ValCurs struct {
 }
 
 type Valute struct {
-	NumCode  string `xml:"NumCode"`
+	NumCode  int    `xml:"NumCode"`
 	CharCode string `xml:"CharCode"`
 	Value    string `xml:"Value"`
 }
@@ -39,23 +39,17 @@ type Currency struct {
 }
 
 func convertCurrencies(valutes []Valute) []Currency {
-	var currencies []Currency
+	currencies := make([]Currency, 0, len(valutes))
 
 	for _, valute := range valutes {
-		numCode, err := strconv.Atoi(valute.NumCode)
-		if err != nil {
-			panic(err)
-		}
-
 		valueStr := strings.ReplaceAll(valute.Value, ",", ".")
-
 		value, err := strconv.ParseFloat(valueStr, 64)
 		if err != nil {
 			panic(err)
 		}
 
 		currency := Currency{
-			NumCode:  numCode,
+			NumCode:  valute.NumCode,
 			CharCode: valute.CharCode,
 			Value:    value,
 		}
@@ -120,12 +114,12 @@ func main() {
 
 	outputDir := filepath.Dir(config.OutputFile)
 
-	err = os.MkdirAll(outputDir, 0755)
+	err = os.MkdirAll(outputDir, 0o755)
 	if err != nil {
 		panic(err)
 	}
 
-	err = os.WriteFile(config.OutputFile, jsonData, 0644)
+	err = os.WriteFile(config.OutputFile, jsonData, 0o600)
 	if err != nil {
 		panic(err)
 	}
