@@ -16,6 +16,11 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+const (
+	outputDirMode  = 0o755
+	outputFileMode = 0o600
+)
+
 type Config struct {
 	InputFile  string `yaml:"input-file"`
 	OutputFile string `yaml:"output-file"`
@@ -43,6 +48,7 @@ func convertCurrencies(valutes []Valute) []Currency {
 
 	for _, valute := range valutes {
 		valueStr := strings.ReplaceAll(valute.Value, ",", ".")
+
 		value, err := strconv.ParseFloat(valueStr, 64)
 		if err != nil {
 			panic(err)
@@ -114,12 +120,12 @@ func main() {
 
 	outputDir := filepath.Dir(config.OutputFile)
 
-	err = os.MkdirAll(outputDir, 0o755)
+	err = os.MkdirAll(outputDir, outputDirMode)
 	if err != nil {
 		panic(err)
 	}
 
-	err = os.WriteFile(config.OutputFile, jsonData, 0o600)
+	err = os.WriteFile(config.OutputFile, jsonData, outputFileMode)
 	if err != nil {
 		panic(err)
 	}
