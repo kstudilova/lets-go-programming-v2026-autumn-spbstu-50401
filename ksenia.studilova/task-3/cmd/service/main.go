@@ -2,10 +2,12 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"encoding/xml"
 	"flag"
 	"io"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
@@ -109,4 +111,21 @@ func main() {
 	sort.Slice(currencies, func(i, j int) bool {
 		return higherValue(currencies[i], currencies[j])
 	})
+
+	jsonData, err := json.MarshalIndent(currencies, "", "    ")
+	if err != nil {
+		panic(err)
+	}
+
+	outputDir := filepath.Dir(config.OutputFile)
+
+	err = os.MkdirAll(outputDir, 0755)
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.WriteFile(config.OutputFile, jsonData, 0644)
+	if err != nil {
+		panic(err)
+	}
 }
