@@ -6,6 +6,7 @@ import (
 	"flag"
 	"io"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -32,6 +33,10 @@ type Currency struct {
 	NumCode  int     `json:"num_code"`
 	CharCode string  `json:"char_code"`
 	Value    float64 `json:"value"`
+}
+
+func higherValue(a, b Currency) bool {
+	return a.Value > b.Value
 }
 
 func main() {
@@ -94,4 +99,8 @@ func main() {
 
 		currencies = append(currencies, currency)
 	}
+
+	sort.Slice(currencies, func(i, j int) bool {
+		return higherValue(currencies[i], currencies[j])
+	})
 }
