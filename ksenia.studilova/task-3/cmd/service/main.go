@@ -6,6 +6,8 @@ import (
 	"flag"
 	"io"
 	"os"
+	"strconv"
+	"strings"
 
 	"golang.org/x/text/encoding/charmap"
 	"gopkg.in/yaml.v3"
@@ -24,6 +26,12 @@ type Valute struct {
 	NumCode  string `xml:"NumCode"`
 	CharCode string `xml:"CharCode"`
 	Value    string `xml:"Value"`
+}
+
+type Currency struct {
+	NumCode  int     `json:"num_code"`
+	CharCode string  `json:"char_code"`
+	Value    float64 `json:"value"`
 }
 
 func main() {
@@ -61,5 +69,29 @@ func main() {
 	err = decoder.Decode(&valCurs)
 	if err != nil {
 		panic(err)
+	}
+
+	var currencies []Currency
+
+	for _, valute := range valCurs.Valutes {
+		numCode, err := strconv.Atoi(valute.NumCode)
+		if err != nil {
+			panic(err)
+		}
+
+		valueStr := strings.ReplaceAll(valute.Value, ",", ".")
+
+		value, err := strconv.ParseFloat(valueStr, 64)
+		if err != nil {
+			panic(err)
+		}
+
+		currency := Currency{
+			NumCode:  numCode,
+			CharCode: valute.CharCode,
+			Value:    value,
+		}
+
+		currencies = append(currencies, currency)
 	}
 }
